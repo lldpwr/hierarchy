@@ -11,10 +11,10 @@ Start-PodeServer {
 
     # Set Parent 
     Add-PodeRoute -Method Post -Path '/parent' -ScriptBlock {
-        Write-Host $WebEvent.Data
+        Write-Host $WebEvent.Data.keys
     }
 
     # html file
-    Add-PodeStaticRoute -Path '/html' -Source '/root/hierarchy/html' -Defaults @('index.html')
+    Add-PodeStaticRoute -Path '/' -Source './html' -Defaults @('index.html')
 }
  
