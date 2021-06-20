@@ -14,6 +14,6 @@ Start-PodeServer {
     }
 
     # html file
-    Add-PodeStaticRoute -Path '/' -Source './html'
+    Add-PodeStaticRoute -Path '/' -Source '/root/hierarchy/html'
 }
  
