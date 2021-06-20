@@ -1,7 +1,8 @@
 Import-Module Pode
 Start-PodeServer {
+    $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
     #Attach port 8000 to the local machine address and use HTTP protocol
-    Add-PodeEndpoint -Address localhost -Port 8000 -Protocol HTTP
+    Add-PodeEndpoint -Address $ip -Port 8000 -Protocol HTTP
 
     #Get hierachy
     Add-PodeRoute -Method Get -Path '/hierarchy' -ScriptBlock {
@@ -14,6 +15,6 @@ Start-PodeServer {
     }
 
     # html file
-    Add-PodeStaticRoute -Path '/' -Source '/root/hierarchy/html'
+    Add-PodeStaticRoute -Path '/html' -Source '/root/hierarchy/html'
 }
  
