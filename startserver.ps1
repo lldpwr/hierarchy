@@ -11,7 +11,7 @@ Start-PodeServer {
 
     # Set Parent 
     Add-PodeRoute -Method Post -Path '/parent' -ScriptBlock {
-        Write-Host $WebEvent.Data.test
+        Write-Host ($WebEvent.Data | gm)
     }
 
     # html file
