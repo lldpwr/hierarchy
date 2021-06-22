@@ -12,6 +12,13 @@ Start-PodeServer {
     # Set Parent 
     Add-PodeRoute -Method Post -Path '/parent' -ScriptBlock {
         Write-Host $WebEvent.Data.test
+        Move-PodeResponseUrl -Url '/html'
+    }
+
+    # Set child
+    Add-PodeRoute -Method Post -Path '/child' -ScriptBlock {
+        Write-Host $WebEvent.Data.test
+        Move-PodeResponseUrl -Url '/html'
     }
 
     # html file
