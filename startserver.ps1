@@ -1,5 +1,18 @@
-Import-Module Pode
+[CmdletBinding()]
+param (
+    $Port=8086,
+    $server=$env:PWSH_DATABASE_SERVER,
+    $name=$env:PWSH_DATABASE_NAME,
+    $pass=$env:PWSH_DATABASE_PASS,
+    [switch]$RemoveConfig,
+    [switch]$RemoveDatabase,
+
+)
+Import-Module Pode.Kestrel
 Start-PodeServer {
+
+    . mysql/initDatabase.ps1 -server $using:server -name $using:name -pass $using:pass -RemoveConfig:$using:RemoveConfig -RemoveDatabase:$using:RemoveDatabase
+    <#
     add-type -path mysql/MySql.Data.dll
     $config = Import-PowerShellDataFile -Path startserver.psd1
     $SQLConnection = New-Object MySql.Data.MySqlClient.MySqlConnection $config.Connection
@@ -11,10 +24,11 @@ Start-PodeServer {
 
     $SQLDataAdapter.SelectCommand.CommandText = "USE heirarchy;";
     $SQLDataAdapter.SelectCommand.ExecuteNonQuery();
+    #>
 
     $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
-    #Attach port 8000 to the local machine address and use HTTP protocol
-    Add-PodeEndpoint -Address $ip -Port 8000 -Protocol HTTP
+    #Attach port 8086 to the local machine address and use HTTP protocol
+    Add-PodeEndpoint -Address $ip -Port $using:Port -Protocol HTTP
 
     #Get hierachy
     Add-PodeRoute -Method Get -Path '/hierarchy' -ScriptBlock {

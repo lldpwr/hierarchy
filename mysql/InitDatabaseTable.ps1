@@ -1,7 +1,10 @@
 [cmdletbinding()]
 param(
+    $server,
+    $name,
     $pass,
-    [switch]$RemoveConfig
+    [switch]$RemoveConfig,
+    [switch]$RemoveDatabase,
 )
 # Find root folder
 $TopLevel = Get-ChildItem -Filter startserver.ps1 -Path .. -Recurse | Select-Object -ExpandProperty DirectoryName
@@ -22,7 +25,7 @@ if([string]::IsNullOrWhiteSpace($pass)){
 }
 
 # If config is not created 
-Get-ChildItem -Path $configFile 2> $null || & { '@{ Connection = "Server=localhost;uid=pode;pwd=' + "'" + $pass + "'" +'"}' | Out-File -Path $configFile -Verbose }
+Get-ChildItem -Path $configFile 2> $null || & { '@{ Connection = "Server=' + "'" + $server + "'" +';uid=' + "'" + $name + "'" +';pwd=' + "'" + $pass + "'" +'"}' | Out-File -Path $configFile -Verbose }
 Write-Verbose "Configfile : $configFile"
 # "startserver.psd1" >> .gitignore
 $config = Import-PowerShellDataFile -Path $configFile
@@ -36,12 +39,15 @@ $SQLCommand.connection = $SQLConnection
 $SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
 $SQLDataAdapter.SelectCommand=$SQLCommand 
 
-Write-Verbose "Remove Previous Database"
-$SQLDataAdapter.SelectCommand.CommandText = "DROP DATABASE IF EXISTS heirarchy;";
-$SQLDataAdapter.SelectCommand.ExecuteNonQuery();
+# Remove previous Database
+if($RemoveDatabase){
+    Write-Verbose "Remove Previous Database"
+    $SQLDataAdapter.SelectCommand.CommandText = "DROP DATABASE IF EXISTS heirarchy;";
+    $SQLDataAdapter.SelectCommand.ExecuteNonQuery();
+}
 
 Write-Verbose "Create Database"
-$SQLDataAdapter.SelectCommand.CommandText = "CREATE DATABASE heirarchy;";
+$SQLDataAdapter.SelectCommand.CommandText = "CREATE DATABASE IF NOT EXISTS heirarchy;";
 $SQLDataAdapter.SelectCommand.ExecuteNonQuery();
 
 $SQLDataAdapter.SelectCommand.CommandText = "USE heirarchy;";
