@@ -22,6 +22,7 @@ Start-PodeServer {
         Write-Host $WebEvent.Data.test
         $SQLDataSet = New-Object System.Data.DataSet
         $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
+        Write-Host $SQLDataAdapter.SelectCommand.CommandText
         $SQLDataAdapter.fill($SQLDataSet)
         $row = $SQLDataSet.Tables[0].NewRow()
         $row.user = $WebEvent.Data.test
