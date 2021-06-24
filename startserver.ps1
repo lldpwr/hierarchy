@@ -25,15 +25,18 @@ Start-PodeServer {
     Add-PodeRoute -Method Post -Path '/AddChild' -ScriptBlock {
         Write-Host $WebEvent.Data.test
         try{
-
-        $SQLDataSet = New-Object System.Data.DataSet
-        $SQLDataAdapter =$using:SQLDataAdapter 
-        $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
-        Write-Host $SQLDataAdapter.SelectCommand.CommandText
-        $SQLDataAdapter.fill($SQLDataSet)
-        $row = $SQLDataSet.Tables[0].NewRow()
-        $row.label = $WebEvent.Data.label
-        $row.parent = $WebEvent.Data.parent
+            $SQLDataSet = New-Object System.Data.DataSet
+            $SQLDataAdapter =$using:SQLDataAdapter 
+            $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
+            $SQLDataAdapter.fill($SQLDataSet)
+            $row = $SQLDataSet.Tables[0].NewRow()
+            $row.label = $WebEvent.Data.label
+            $row.parent = $WebEvent.Data.parent
+            $SQLDataSet.Tables[0].Rows.Add($row)
+            $CommandBuilder = New-Object MySql.Data.MySqlClient.MySqlCommandBuilder $SQLDataAdapter
+            $SQLDataAdapter.InsertCommand = $CommandBuilder.GetInsertCommand()
+            $execute_count = $SQLDataAdapter.Update($SQLDataSet)
+            Write-Host "add " + $row.label + " related to " + $row.parent
         }catch{
             Write-Host $_.Exception.Message
         }
