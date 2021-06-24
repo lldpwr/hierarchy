@@ -24,11 +24,7 @@ Start-PodeServer {
             $SQLDataAdapter = $using:SQLDataAdapter 
             $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation";
             $SQLDataAdapter.fill($SQLDataSet)
-<<<<<<< HEAD
             Write-PodeHtmlResponse ($SQLDataSet.Tables[0] | Select id, label, parent | ConvertTo-Html)
-=======
-            Write-PodeHtmlResponse $SQLDataSet.Tables[0] | Select id, label, parent | ConvertTo-Html
->>>>>>> 44df8c3403f26971ed967fef0ed078cd7a32370b
         }catch{
             Write-Host $_.Exception.Message
         }
