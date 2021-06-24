@@ -11,7 +11,7 @@ param (
 Import-Module Pode.Kestrel
 Start-PodeServer {
 
-    . mysql/initDatabase.ps1 -server $using:server -name $using:name -pass $using:pass -RemoveConfig:$using:RemoveConfig -RemoveDatabase:$using:RemoveDatabase
+    . mysql/initDatabase.ps1 -server $server -name $name -pass $pass -RemoveConfig:$RemoveConfig -RemoveDatabase:$RemoveDatabase
     <#
     add-type -path mysql/MySql.Data.dll
     $config = Import-PowerShellDataFile -Path startserver.psd1
