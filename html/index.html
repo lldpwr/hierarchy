@@ -23,5 +23,15 @@
         <input type="text" name="label" id="label">
         <input type="submit" value="submit">
     </form>
+    <h2>Update Parent</h2>
+    <form action="/UpdateParent" method="post">
+        <label>Id/Key</label>
+        <input type="number" name="key" id="key" min="1">
+        <label>New Parent</label>
+        <input type="number" name="parent" id="parent"  min="0">
+        <input type="submit" value="submit">
+    </form>
+    <h2>Database</h2>
+    <iframe src="/hierarchy"></iframe>
 </body>
 </html>
