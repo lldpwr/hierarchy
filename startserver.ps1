@@ -5,7 +5,7 @@ Start-PodeServer {
     $SQLConnection.open()
     $SQLCommand = New-Object MySql.Data.MySqlClient.MySqlCommand
     $SQLCommand.connection = $SQLConnection
-    $Global:SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
+    $SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
     $SQLDataAdapter.SelectCommand=$SQLCommand 
 
     $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
@@ -23,6 +23,7 @@ Start-PodeServer {
         try{
 
         $SQLDataSet = New-Object System.Data.DataSet
+        $SQLDataAdapter =$using:SQLDataAdapter 
         $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
         Write-Host $SQLDataAdapter.SelectCommand.CommandText
         $SQLDataAdapter.fill($SQLDataSet)
