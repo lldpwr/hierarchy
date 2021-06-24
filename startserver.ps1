@@ -20,6 +20,8 @@ Start-PodeServer {
     # Set Parent 
     Add-PodeRoute -Method Post -Path '/parent' -ScriptBlock {
         Write-Host $WebEvent.Data.test
+        try{
+
         $SQLDataSet = New-Object System.Data.DataSet
         $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
         Write-Host $SQLDataAdapter.SelectCommand.CommandText
@@ -27,6 +29,9 @@ Start-PodeServer {
         $row = $SQLDataSet.Tables[0].NewRow()
         $row.user = $WebEvent.Data.test
         $row.parent = 0
+        }catch{
+            Write-Host $_.Exception.Message
+        }
         Move-PodeResponseUrl -Url '/html'
     }
 
