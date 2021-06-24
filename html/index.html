@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearchie</title>
+    <title>Hierarchy</title>
 </head>
 <body>
-    <h2>Add Parent</h2>
-    <form action="/parent" method="post">
-        <input type="text" name="test" id="test">
+    <h2>Add Child</h2>
+    <form action="/AddChild" method="post">
+        <label>Label</label>
+        <input type="text" name="label" id="lable">
+        <label>Parent relation</label>
+        <input type="number" name="parent" id="parent"  min="0">
         <input type="submit" value="submit">
     </form>
-    <h2>Add Child</h2>
-    <form action="/child" method="post">
-        <input type="text" name="test" id="test">
+    <h2>Update label</h2>
+    <form action="/UpdateLabel" method="post">
+        <label>Id/Key</label>
+        <input type="number" name="key" id="key" min="1">
+        <label>New Label</label>
+        <input type="text" name="label" id="label">
         <input type="submit" value="submit">
     </form>
 </body>
