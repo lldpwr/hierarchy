@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hierarchy</title>
 </head>
-<body>
-    <h2>Add Child</h2>
-    <form action="/AddChild" method="post">
-        <label>Label</label>
-        <input type="text" name="label" id="label">
-        <label>Parent relation</label>
-        <input type="number" name="parent" id="parent"  min="0">
-        <input type="submit" value="submit">
-    </form>
-    <h2>Update label</h2>
-    <form action="/UpdateLabel" method="post">
-        <label>Id/Key</label>
-        <input type="number" name="key" id="key" min="1">
-        <label>New Label</label>
-        <input type="text" name="label" id="label">
-        <input type="submit" value="submit">
-    </form>
-    <h2>Update Parent</h2>
-    <form action="/UpdateParent" method="post">
-        <label>Id/Key</label>
-        <input type="number" name="key" id="key" min="1">
-        <label>New Parent</label>
-        <input type="number" name="parent" id="parent"  min="0">
-        <input type="submit" value="submit">
-    </form>
-    <h2>Database</h2>
-    <iframe src="/hierarchy"></iframe>
+
+<body style="display: grid; place-items: center;">
+    <div>
+        <h2>Add Child</h2>
+        <form action="/AddChild" method="post">
+            <label>Label</label>
+            <input type="text" name="label" id="label">
+            <label>Parent relation</label>
+            <input type="number" name="parent" id="parent" min="0">
+            <input type="submit" value="submit">
+        </form>
+        <h2>Update label</h2>
+        <form action="/UpdateLabel" method="post">
+            <label>Id/Key</label>
+            <input type="number" name="key" id="key" min="1">
+            <label>Update Label</label>
+            <input type="text" name="label" id="label">
+            <input type="submit" value="submit">
+        </form>
+        <h2>Update Parent</h2>
+        <form action="/UpdateParent" method="post">
+            <label>Id/Key</label>
+            <input type="number" name="key" id="key" min="1">
+            <label>Update Parent</label>
+            <input type="number" name="parent" id="parent" min="0">
+            <input type="submit" value="submit">
+        </form>
+        <h2>Database</h2>
+        <iframe src="/hierarchy"></iframe>
+    </div>
 </body>
+
 </html>

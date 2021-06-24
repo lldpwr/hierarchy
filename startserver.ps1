@@ -33,7 +33,6 @@ Start-PodeServer {
 
     # Set AddChild 
     Add-PodeRoute -Method Post -Path '/AddChild' -ScriptBlock {
-        Write-Host $WebEvent.Data.test
         try{
             $SQLDataSet = New-Object System.Data.DataSet
             $SQLDataAdapter =$using:SQLDataAdapter 
@@ -55,15 +54,43 @@ Start-PodeServer {
 
     # Set Label
     Add-PodeRoute -Method Post -Path '/UpdateLabel' -ScriptBlock {
-        Write-Host $WebEvent.Data.key
-        Write-Host $WebEvent.Data.label
+        try{
+            $SQLDataSet = New-Object System.Data.DataSet
+            $SQLDataAdapter =$using:SQLDataAdapter 
+            $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
+            $SQLDataAdapter.fill($SQLDataSet)
+            $row = $SQLDataSet.Tables[0].NewRow()
+            $row.id = $WebEvent.Data.key
+            $row.label = $WebEvent.Data.label
+            $SQLDataSet.Tables[0].Rows.Add($row)
+            $CommandBuilder = New-Object MySql.Data.MySqlClient.MySqlCommandBuilder $SQLDataAdapter
+            $SQLDataAdapter.InsertCommand = $CommandBuilder.GetUpdateCommand()
+            $execute_count = $SQLDataAdapter.Update($SQLDataSet)
+            Write-Host "add " + $row.label + " related to " + $row.parent
+        }catch{
+            Write-Host $_.Exception.Message
+        }
         Move-PodeResponseUrl -Url '/html'
     }
 
     # Set Label
     Add-PodeRoute -Method Post -Path '/UpdateParent' -ScriptBlock {
-        Write-Host $WebEvent.Data.key
-        Write-Host $WebEvent.Data.label
+        try{
+            $SQLDataSet = New-Object System.Data.DataSet
+            $SQLDataAdapter =$using:SQLDataAdapter 
+            $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
+            $SQLDataAdapter.fill($SQLDataSet)
+            $row = $SQLDataSet.Tables[0].NewRow()
+            $row.id = $WebEvent.Data.key
+            $row.parent = $WebEvent.Data.parent
+            $SQLDataSet.Tables[0].Rows.Add($row)
+            $CommandBuilder = New-Object MySql.Data.MySqlClient.MySqlCommandBuilder $SQLDataAdapter
+            $SQLDataAdapter.InsertCommand = $CommandBuilder.GetUpdateCommand()
+            $execute_count = $SQLDataAdapter.Update($SQLDataSet)
+            Write-Host "add " + $row.label + " related to " + $row.parent
+        }catch{
+            Write-Host $_.Exception.Message
+        }
         Move-PodeResponseUrl -Url '/html'
     }
 
