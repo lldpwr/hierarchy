@@ -1,7 +1,7 @@
 Import-Module Pode
 Start-PodeServer {
     add-type -path mysql/MySql.Data.dll
-    $config = Import-PowerShellDataFile -Path $configFile
+    $config = Import-PowerShellDataFile -Path startserver.psd1
     $SQLConnection = New-Object MySql.Data.MySqlClient.MySqlConnection $config.Connection
     $SQLConnection.open()
     $SQLCommand = New-Object MySql.Data.MySqlClient.MySqlCommand
