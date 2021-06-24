@@ -1,5 +1,13 @@
 Import-Module Pode
 Start-PodeServer {
+    add-type -path mysql/MySql.Data.dll
+    $SQLConnection = New-Object MySql.Data.MySqlClient.MySqlConnection "Server=localhost;uid=pode;pwd=')9ij{pok';"
+    $SQLConnection.open()
+    $SQLCommand = New-Object MySql.Data.MySqlClient.MySqlCommand
+    $SQLCommand.connection = $SQLConnection
+    $SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
+    $SQLDataAdapter.SelectCommand=$SQLCommand 
+
     $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
     #Attach port 8000 to the local machine address and use HTTP protocol
     Add-PodeEndpoint -Address $ip -Port 8000 -Protocol HTTP
@@ -12,6 +20,12 @@ Start-PodeServer {
     # Set Parent 
     Add-PodeRoute -Method Post -Path '/parent' -ScriptBlock {
         Write-Host $WebEvent.Data.test
+        $SQLDataSet = New-Object System.Data.DataSet
+        $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation LIMIT 0";
+        $SQLDataAdapter.fill($SQLDataSet)
+        $row = $SQLDataSet.Tables[0].NewRow()
+        $row.user = $WebEvent.Data.test
+        $row.parent = 0
         Move-PodeResponseUrl -Url '/html'
     }
 
