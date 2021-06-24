@@ -5,9 +5,9 @@ param (
     $name=$env:PWSH_DATABASE_NAME,
     $pass=$env:PWSH_DATABASE_PASS,
     [switch]$RemoveConfig,
-    [switch]$RemoveDatabase,
-
+    [switch]$RemoveDatabase
 )
+
 Import-Module Pode.Kestrel
 Start-PodeServer {
 
