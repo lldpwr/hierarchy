@@ -4,7 +4,7 @@ param(
     $name,
     $pass,
     [switch]$RemoveConfig,
-    [switch]$RemoveDatabase,
+    [switch]$RemoveDatabase
 )
 # Find root folder
 $TopLevel = Get-ChildItem -Filter startserver.ps1 -Path .. -Recurse | Select-Object -ExpandProperty DirectoryName
@@ -18,9 +18,7 @@ if($RemoveConfig){
 }
 
 
-if([string]::IsNullOrWhiteSpace($pass)){
-    $pass = Read-Host "Write the database Password here"
-}else{
+if(![string]::IsNullOrWhiteSpace($pass)){
     Write-Verbose "A Password was indicated"
 }
 
