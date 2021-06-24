@@ -5,7 +5,7 @@ Start-PodeServer {
     $SQLConnection.open()
     $SQLCommand = New-Object MySql.Data.MySqlClient.MySqlCommand
     $SQLCommand.connection = $SQLConnection
-    $SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
+    $Global:SQLDataAdapter = New-Object MySql.Data.MySqlClient.MySqlDataAdapter
     $SQLDataAdapter.SelectCommand=$SQLCommand 
 
     $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
