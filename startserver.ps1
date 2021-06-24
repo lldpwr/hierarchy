@@ -19,6 +19,15 @@ Start-PodeServer {
     #Get hierachy
     Add-PodeRoute -Method Get -Path '/hierarchy' -ScriptBlock {
         Write-Host "hierarchy"
+        try{
+            $SQLDataSet = New-Object System.Data.DataSet
+            $SQLDataAdapter = $using:SQLDataAdapter 
+            $SQLDataAdapter.SelectCommand.CommandText = "SELECT * FROM Relation";
+            $SQLDataAdapter.fill($SQLDataSet)
+            Write-PodeHtmlResponse $SQLDataSet.Tables[0] | Select id, label, parent | ConvertTo-Html
+        }catch{
+            Write-Host $_.Exception.Message
+        }
     }
 
     # Set AddChild 
@@ -43,8 +52,15 @@ Start-PodeServer {
         Move-PodeResponseUrl -Url '/html'
     }
 
-    # Set child
+    # Set Label
     Add-PodeRoute -Method Post -Path '/UpdateLabel' -ScriptBlock {
+        Write-Host $WebEvent.Data.key
+        Write-Host $WebEvent.Data.label
+        Move-PodeResponseUrl -Url '/html'
+    }
+
+    # Set Label
+    Add-PodeRoute -Method Post -Path '/UpdateParent' -ScriptBlock {
         Write-Host $WebEvent.Data.key
         Write-Host $WebEvent.Data.label
         Move-PodeResponseUrl -Url '/html'
