@@ -64,9 +64,9 @@ Start-PodeServer {
             $row.label = $WebEvent.Data.label
             $SQLDataSet.Tables[0].Rows.Add($row)
             $CommandBuilder = New-Object MySql.Data.MySqlClient.MySqlCommandBuilder $SQLDataAdapter
-            $SQLDataAdapter.InsertCommand = $CommandBuilder.GetUpdateCommand()
+            $SQLDataAdapter.UpdateCommand = $CommandBuilder.GetUpdateCommand()
             $execute_count = $SQLDataAdapter.Update($SQLDataSet)
-            Write-Host "add " + $row.label + " related to " + $row.parent
+            Write-Host "set " + $row.id + " to " + $row.label
         }catch{
             Write-Host $_.Exception.Message
         }
@@ -85,9 +85,9 @@ Start-PodeServer {
             $row.parent = $WebEvent.Data.parent
             $SQLDataSet.Tables[0].Rows.Add($row)
             $CommandBuilder = New-Object MySql.Data.MySqlClient.MySqlCommandBuilder $SQLDataAdapter
-            $SQLDataAdapter.InsertCommand = $CommandBuilder.GetUpdateCommand()
+            $SQLDataAdapter.UpdateCommand = $CommandBuilder.GetUpdateCommand()
             $execute_count = $SQLDataAdapter.Update($SQLDataSet)
-            Write-Host "add " + $row.label + " related to " + $row.parent
+            Write-Host "set " + $row.id + " to " + $row.parent
         }catch{
             Write-Host $_.Exception.Message
         }
