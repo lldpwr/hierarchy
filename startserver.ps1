@@ -15,7 +15,11 @@ Start-PodeServer -ListenerType Kestrel {
     . mysql/InitDatabaseTable.ps1 -server $server -name $name -pass $pass -RemoveConfig:$RemoveConfig -RemoveDatabase:$RemoveDatabase
 
     # Find computer ip
-    $ip = ip -j a | ConvertFrom-Json | Where-Object ifname -eq eth0 | Select-Object -ExpandProperty addr_info | Select-Object -ExpandProperty local -First 1
+    try{
+        $ip = (hostname -I) -split " " |  Select-Object -First 1
+    }catch{
+        $ip = "localhost"
+    }
     #Attach port 8086 to the local machine address and use HTTP protocol
     Add-PodeEndpoint -Address $ip -Port $Port -Protocol HTTP
 

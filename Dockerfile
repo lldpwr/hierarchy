@@ -4,4 +4,4 @@ RUN pwsh -c 'Install-Module -Name Pode.Kestrel -Confirm:$false -force'
 WORKDIR /usr/src/app/
 COPY . .
 EXPOSE 8086
-CMD ["pwsh", "-c", "./startserver.ps1"]
+CMD ["pwsh", "./startserver.ps1"]
