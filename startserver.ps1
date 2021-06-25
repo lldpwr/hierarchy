@@ -8,8 +8,9 @@ param (
     [switch]$RemoveDatabase
 )
 
+Import-Module Pode
 Import-Module Pode.Kestrel
-Start-PodeServer {
+Start-PodeServer -ListenerType Kestrel {
 
     . mysql/InitDatabaseTable.ps1 -server $server -name $name -pass $pass -RemoveConfig:$RemoveConfig -RemoveDatabase:$RemoveDatabase
 
