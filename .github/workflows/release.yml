@@ -19,7 +19,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "lldpwr/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+          --tag "lldpwr/hierarchy:$GITHUB_SHA" \
           .
 
     # Merge to release
